@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+ <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+  <encoder>
+   <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+  </encoder>
+ </appender>
+ <appender name="BENCHMARKING-FILE" class="ch.qos.logback.core.FileAppender">
+  <file>${at.jku.dke.kgolap.demo.benchmark.log}</file>
+  <append>true</append>
+  <encoder>
+   <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS},%msg%n</pattern>
+  </encoder>
+ </appender>
+ <appender name="BENCHMARKING-STATISTICS-FILE" class="ch.qos.logback.core.FileAppender">
+  <file>${at.jku.dke.kgolap.demo.benchmark.statistics.log}</file>
+  <append>true</append>
+  <encoder>
+   <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS},%msg%n</pattern>
+  </encoder>
+ </appender>
+ <logger name="benchmarking" level="info" additivity="false">
+  <appender-ref ref="BENCHMARKING-FILE"/>
+ </logger>
+ <logger name="benchmarking-statistics" level="info" additivity="false">
+  <appender-ref ref="BENCHMARKING-STATISTICS-FILE"/>
+ </logger>
+ <root level="info">
+  <appender-ref ref="STDOUT" />
+ </root>
+</configuration>

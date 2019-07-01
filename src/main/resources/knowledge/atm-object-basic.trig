@@ -1,0 +1,46 @@
+!moduleName! {
+  obj:Airport rdfs:subClassOf obj:AirportHeliport .
+  
+  obj:Runway rdfs:subClassOf obj:RunwayTaxiway .
+  obj:Taxiway rdfs:subClassOf obj:RunwayTaxiway .
+  
+  obj:isSituatedAt rdfs:range obj:AirportHeliport .
+  
+  obj:availability rdfs:range obj:ManoeuvringAreaAvailability .
+  
+  obj:warning rdfs:domain obj:ManoeuvringAreaAvailability .
+  
+  obj:warningAdjacent rdfs:domain obj:ManoeuvringAreaAvailability .
+  obj:warningAdjacent rdfs:range xsd:boolean .
+  
+  obj:operationalStatus rdfs:domain obj:ManoeuvringAreaAvailability .
+  
+  obj:usage rdfs:domain obj:ManoeuvringAreaAvailability .
+  obj:usage rdfs:range obj:ManoeuvringAreaUsage .
+  
+  obj:usageType rdfs:domain obj:ManoeuvringAreaUsage .
+  
+  obj:operation rdfs:domain obj:ManoeuvringAreaUsage .
+  
+  obj:aircraft rdfs:domain obj:ManoeuvringAreaUsage .
+  obj:aircraft rdfs:range obj:AircraftCharacteristic .
+  
+  obj:weight rdfs:domain obj:AircraftCharacteristic .
+  
+  obj:weightInterpretation rdfs:domain obj:AircraftCharacteristic .
+  
+  obj:wingspan rdfs:domain obj:AircraftCharacteristic .
+  
+  obj:wingspanInterpretation rdfs:domain obj:AircraftCharacteristic .
+  
+  obj:contaminant rdfs:range obj:SurfaceContamination .
+  
+  obj:depth rdfs:domain obj:SurfaceContamination .
+  
+  obj:layer rdfs:domain obj:SurfaceContamination .
+  obj:layer rdfs:range obj:SurfaceContaminationLayer .
+  
+  obj:contaminationType rdfs:domain obj:SurfaceContaminationLayer .
+  
+  obj:frequency rdfs:domain obj:VOR .  
+}

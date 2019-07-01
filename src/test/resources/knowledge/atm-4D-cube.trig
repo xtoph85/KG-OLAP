@@ -1,0 +1,287 @@
+@prefix xml:  <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix ckr:  <http://dkm.fbk.eu/ckr/meta#> .
+@prefix olap: <http://dkm.fbk.eu/ckr/olap-model#> .
+@prefix : <http://example.org/kgolap/cube-model#> .
+
+ckr:global {
+  olap:DimensionAttributeValue rdf:type owl:Class ;
+                               rdfs:subClassOf ckr:AttributeValue . 
+    
+  olap:Cell rdf:type owl:Class ;
+            rdfs:subClassOf ckr:Context .
+    
+  olap:hasDimensionAttributeValue rdf:type    owl:ObjectProperty ;
+                                  rdfs:range  olap:DimensionAttributeValue ;
+                                  rdfs:domain olap:Cell .
+
+  olap:atLevel rdf:type owl:ObjectProperty ;
+               rdfs:domain olap:DimensionAttributeValue ;
+               rdfs:range olap:Level .
+  
+  olap:covers rdf:type owl:ObjectProperty ;
+              rdfs:range  olap:Cell ;
+              rdfs:domain olap:Cell .
+
+  ckr:hasAssertedModule rdf:type owl:ObjectProperty ;
+                        rdfs:subPropertyOf ckr:hasModule ;
+                        rdfs:domain ckr:Context ;
+                        rdfs:range ckr:Module .
+
+  olap:directlyRollsUpTo rdf:type owl:ObjectProperty ;
+                         rdfs:subPropertyOf olap:rollsUpTo .
+  
+  olap:hasDimensionAttributeValue rdf:type owl:ObjectProperty ;
+                                  rdfs:range olap:DimensionAttributeValue ;
+                                  rdfs:domain olap:Cell .
+
+  olap:rollsUpTo rdf:type owl:ObjectProperty .
+
+  olap:rollsUpTo owl:propertyChainAxiom ( olap:rollsUpTo olap:rollsUpTo ) . 
+}
+
+
+ckr:global {
+  :Aircraft rdf:type owl:Class, owl:ObjectProperty ;
+            rdfs:subClassOf olap:DimensionAttributeValue .
+  :hasAircraft rdf:type owl:FunctionalProperty, owl:ObjectProperty ;
+               rdfs:range :Aircraft ;
+               rdfs:subPropertyOf olap:hasDimensionAttributeValue .
+                  
+  :Location rdf:type owl:Class, owl:ObjectProperty ;
+            rdfs:subClassOf olap:DimensionAttributeValue .
+  :hasLocation rdf:type owl:FunctionalProperty, owl:ObjectProperty ;
+               rdfs:range :Location ;
+               rdfs:subPropertyOf olap:hasDimensionAttributeValue .
+  
+  :Date rdf:type owl:Class, owl:ObjectProperty ;
+        rdfs:subClassOf olap:DimensionAttributeValue .
+  :hasDate rdf:type owl:FunctionalProperty, owl:ObjectProperty ;
+           rdfs:range :Date ;
+           rdfs:subPropertyOf olap:hasDimensionAttributeValue .
+  
+  :Importance rdf:type owl:Class, owl:ObjectProperty ;
+        rdfs:subClassOf olap:DimensionAttributeValue .
+  :hasImportance rdf:type owl:FunctionalProperty, owl:ObjectProperty ;
+           rdfs:range :Importance ;
+           rdfs:subPropertyOf olap:hasDimensionAttributeValue .
+}
+
+
+ckr:global {
+  :Level_Aircraft_All rdf:type olap:Level, owl:NamedIndividual .
+  :Level_Aircraft_Type rdf:type olap:Level, owl:NamedIndividual ;
+                       olap:directlyRollsUpTo :Level_Aircraft_All .
+  :Level_Aircraft_Model rdf:type olap:Level, owl:NamedIndividual ;
+                        olap:directlyRollsUpTo :Level_Aircraft_Type .
+  
+  :Level_Location_All rdf:type olap:Level, owl:NamedIndividual .
+  :Level_Location_Region rdf:type olap:Level, owl:NamedIndividual ;
+                         olap:directlyRollsUpTo :Level_Location_All .
+  :Level_Location_Segment rdf:type olap:Level, owl:NamedIndividual ;
+                          olap:directlyRollsUpTo :Level_Location_Region .
+  
+  :Level_Date_All rdf:type olap:Level, owl:NamedIndividual .
+  :Level_Date_Year rdf:type olap:Level, owl:NamedIndividual ;
+                   olap:directlyRollsUpTo :Level_Date_All .
+  :Level_Date_Month rdf:type olap:Level, owl:NamedIndividual ;
+                    olap:directlyRollsUpTo :Level_Date_Year .
+  :Level_Date_Day rdf:type olap:Level, owl:NamedIndividual ;
+                  olap:directlyRollsUpTo :Level_Date_Month .
+  
+  :Level_Importance_All rdf:type olap:Level, owl:NamedIndividual .
+  :Level_Importance_Package rdf:type olap:Level, owl:NamedIndividual ;
+                                olap:directlyRollsUpTo :Level_Importance_All .
+  :Level_Importance_Importance rdf:type olap:Level, owl:NamedIndividual ;
+                          olap:directlyRollsUpTo :Level_Importance_Package .
+}
+
+ckr:global {
+  :Level_Aircraft_All-All rdf:type :Aircraft, owl:NamedIndividual ;
+                          olap:atLevel :Level_Aircraft_All .
+  :Level_Aircraft_Type-FixedWing rdf:type :Aircraft, owl:NamedIndividual ;
+                                 olap:atLevel :Level_Aircraft_Type ;
+                                 olap:directlyRollsUpTo :Level_Aircraft_All-All .
+  :Level_Aircraft_Type-RotaryWing rdf:type :Aircraft, owl:NamedIndividual ;
+                                  olap:atLevel :Level_Aircraft_Type ;
+                                  olap:directlyRollsUpTo :Level_Aircraft_All-All .
+  :Level_Aircraft_Model-A380 rdf:type :Aircraft, owl:NamedIndividual ;
+                             olap:atLevel :Level_Aircraft_Model ;
+                             olap:directlyRollsUpTo :Level_Aircraft_Type-FixedWing .
+  :Level_Aircraft_Model-EC145 rdf:type :Aircraft, owl:NamedIndividual ;
+                              olap:atLevel :Level_Aircraft_Model ;
+                              olap:directlyRollsUpTo :Level_Aircraft_Type-RotaryWing .
+  
+  :Level_Location_All-All rdf:type :Location, owl:NamedIndividual ;
+                          olap:atLevel :Level_Location_All .
+  :Level_Location_Region-LOVV rdf:type :Location, owl:NamedIndividual ;
+                              olap:atLevel :Level_Location_Region ;
+                              olap:directlyRollsUpTo :Level_Location_All-All .
+  :Level_Location_Region-LIMM rdf:type :Location, owl:NamedIndividual ;
+                              olap:atLevel :Level_Location_Region ;
+                              olap:directlyRollsUpTo :Level_Location_All-All .
+  :Level_Location_Region-EDUU rdf:type :Location, owl:NamedIndividual ;
+                              olap:atLevel :Level_Location_Region ;
+                              olap:directlyRollsUpTo :Level_Location_All-All .
+  :Level_Location_Segment-LOWW rdf:type :Location, owl:NamedIndividual ;
+                               olap:atLevel :Level_Location_Segment ;
+                               olap:directlyRollsUpTo :Level_Location_Region-LOVV .
+  :Level_Location_Segment-LOWL rdf:type :Location, owl:NamedIndividual ;
+                               olap:atLevel :Level_Location_Segment ;
+                               olap:directlyRollsUpTo :Level_Location_Region-LOVV .
+  :Level_Location_Segment-LIMC rdf:type :Location, owl:NamedIndividual ;
+                               olap:atLevel :Level_Location_Segment ;
+                               olap:directlyRollsUpTo :Level_Location_Region-LIMM .
+  :Level_Location_Segment-LIMF rdf:type :Location, owl:NamedIndividual ;
+                               olap:atLevel :Level_Location_Segment ;
+                               olap:directlyRollsUpTo :Level_Location_Region-LIMM .
+  :Level_Location_Segment-LZIB rdf:type :Location, owl:NamedIndividual ;
+                               olap:atLevel :Level_Location_Segment ;
+                               olap:directlyRollsUpTo :Level_Location_Region-EDUU .
+  
+  :Level_Date_All-All rdf:type :Date, owl:NamedIndividual ;
+                      olap:atLevel :Level_Date_All .
+  :Level_Date_Year-2020 rdf:type :Date, owl:NamedIndividual ;
+                        olap:atLevel :Level_Date_Year ;
+                        olap:directlyRollsUpTo :Level_Date_All-All .
+  :Level_Date_Month-January2020 rdf:type :Date, owl:NamedIndividual ;
+                                olap:atLevel :Level_Date_Month ;
+                                olap:directlyRollsUpTo :Level_Date_Year-2020 .
+  :Level_Date_Month-February2020 rdf:type :Date, owl:NamedIndividual ;
+                                 olap:atLevel :Level_Date_Month ;
+                                 olap:directlyRollsUpTo :Level_Date_Year-2020 .
+  :Level_Date_Day-12January2020 rdf:type :Date, owl:NamedIndividual ;
+                                olap:atLevel :Level_Date_Day ;
+                                olap:directlyRollsUpTo :Level_Date_Month-January2020 .
+  :Level_Date_Day-13January2020 rdf:type :Date, owl:NamedIndividual ;
+                                olap:atLevel :Level_Date_Day ;
+                                olap:directlyRollsUpTo :Level_Date_Month-January2020 .
+  :Level_Date_Day-12February2020 rdf:type :Date, owl:NamedIndividual ;
+                                 olap:atLevel :Level_Date_Day ;
+                                 olap:directlyRollsUpTo :Level_Date_Month-February2020 .
+  :Level_Date_Day-13February2020 rdf:type :Date, owl:NamedIndividual ;
+                                 olap:atLevel :Level_Date_Day ;
+                                 olap:directlyRollsUpTo :Level_Date_Month-February2020 .
+                          
+  :Level_Importance_All-All rdf:type :Importance, owl:NamedIndividual ;
+                            olap:atLevel :Level_Importance_All .
+  :Level_Importance_Package-Essential rdf:type :Importance, owl:NamedIndividual ;
+                                      olap:atLevel :Level_Importance_Package ;
+                                      olap:directlyRollsUpTo :Level_Importance_All-All .
+  :Level_Importance_Package-Supplementary rdf:type :Importance, owl:NamedIndividual ;
+                                          olap:atLevel :Level_Importance_Package ;
+                                          olap:directlyRollsUpTo :Level_Importance_All-All .
+  :Level_Importance_Importance-FlightCritical rdf:type :Importance, owl:NamedIndividual ;
+                                              olap:atLevel :Level_Importance_Importance ;
+                                              olap:directlyRollsUpTo :Level_Importance_Package-Essential .
+  :Level_Importance_Importance-Restriction rdf:type :Importance, owl:NamedIndividual ;
+                                           olap:atLevel :Level_Importance_Importance ;
+                                           olap:directlyRollsUpTo :Level_Importance_Package-Essential .
+  :Level_Importance_Importance-PotentialHazard rdf:type :Importance, owl:NamedIndividual ;
+                                               olap:atLevel :Level_Importance_Importance ;
+                                               olap:directlyRollsUpTo :Level_Importance_Package-Supplementary .
+}
+
+ckr:global {
+  :Ctx-0 rdf:type olap:Cell .
+  :Ctx-0 :hasAircraft :Level_Aircraft_All-All .
+  :Ctx-0 :hasLocation :Level_Location_All-All .
+  :Ctx-0 :hasDate :Level_Date_All-All .
+  :Ctx-0 :hasImportance :Level_Importance_All-All .
+  :Ctx-0 ckr:hasAssertedModule :Ctx-0-mod .
+  
+  :Ctx-1 rdf:type olap:Cell .
+  :Ctx-1 :hasAircraft :Level_Aircraft_All-All .
+  :Ctx-1 :hasLocation :Level_Location_Region-LOVV .
+  :Ctx-1 :hasDate :Level_Date_Year-2020 .
+  :Ctx-1 :hasImportance :Level_Importance_All-All .
+  :Ctx-1 ckr:hasAssertedModule :Ctx-1-mod .
+  
+  :Ctx-2 rdf:type olap:Cell .
+  :Ctx-2 :hasAircraft :Level_Aircraft_Type-FixedWing .
+  :Ctx-2 :hasLocation :Level_Location_Region-LOVV .
+  :Ctx-2 :hasDate :Level_Date_Month-February2020 .
+  :Ctx-2 :hasImportance :Level_Importance_Package-Supplementary .
+  :Ctx-2 ckr:hasAssertedModule :Ctx-2-mod .
+  
+  :Ctx-3 rdf:type olap:Cell .
+  :Ctx-3 :hasAircraft :Level_Aircraft_All-All .
+  :Ctx-3 :hasLocation :Level_Location_Segment-LOWW .
+  :Ctx-3 :hasDate :Level_Date_Year-2020 .
+  :Ctx-3 :hasImportance :Level_Importance_All-All .
+  :Ctx-3 ckr:hasAssertedModule :Ctx-3-mod .
+  
+  :Ctx-4 rdf:type olap:Cell .
+  :Ctx-4 :hasAircraft :Level_Aircraft_Type-FixedWing .
+  :Ctx-4 :hasLocation :Level_Location_Segment-LOWW .
+  :Ctx-4 :hasDate :Level_Date_Day-12February2020 .
+  :Ctx-4 :hasImportance :Level_Importance_Package-Essential .
+  :Ctx-4 ckr:hasAssertedModule :Ctx-4-mod .
+  
+  :Ctx-5 rdf:type olap:Cell .
+  :Ctx-5 :hasAircraft :Level_Aircraft_Model-A380 .
+  :Ctx-5 :hasLocation :Level_Location_Segment-LOWW .
+  :Ctx-5 :hasDate :Level_Date_Day-12February2020 .
+  :Ctx-5 :hasImportance :Level_Importance_Importance-FlightCritical .
+  :Ctx-5 ckr:hasAssertedModule :Ctx-5-mod .
+  
+  :Ctx-6 rdf:type olap:Cell .
+  :Ctx-6 :hasAircraft :Level_Aircraft_Model-A380 .
+  :Ctx-6 :hasLocation :Level_Location_Segment-LOWW .
+  :Ctx-6 :hasDate :Level_Date_Day-12February2020 .
+  :Ctx-6 :hasImportance :Level_Importance_Importance-Restriction .
+  :Ctx-6 ckr:hasAssertedModule :Ctx-6-mod .
+  
+  
+  :Ctx-7 rdf:type olap:Cell .
+  :Ctx-7 :hasAircraft :Level_Aircraft_All-All .
+  :Ctx-7 :hasLocation :Level_Location_Region-LIMM .
+  :Ctx-7 :hasDate :Level_Date_Year-2020 .
+  :Ctx-7 :hasImportance :Level_Importance_All-All .
+  :Ctx-7 ckr:hasAssertedModule :Ctx-7-mod .
+  
+  :Ctx-8 rdf:type olap:Cell .
+  :Ctx-8 :hasAircraft :Level_Aircraft_Type-FixedWing .
+  :Ctx-8 :hasLocation :Level_Location_Region-LIMM .
+  :Ctx-8 :hasDate :Level_Date_Month-February2020 .
+  :Ctx-8 :hasImportance :Level_Importance_Package-Supplementary .
+  :Ctx-8 ckr:hasAssertedModule :Ctx-8-mod .
+  
+  :Ctx-9 rdf:type olap:Cell .
+  :Ctx-9 :hasAircraft :Level_Aircraft_All-All .
+  :Ctx-9 :hasLocation :Level_Location_Segment-LIMC .
+  :Ctx-9 :hasDate :Level_Date_Year-2020 .
+  :Ctx-9 :hasImportance :Level_Importance_All-All .
+  :Ctx-9 ckr:hasAssertedModule :Ctx-9-mod .
+  
+  :Ctx-10 rdf:type olap:Cell .
+  :Ctx-10 :hasAircraft :Level_Aircraft_Type-FixedWing .
+  :Ctx-10 :hasLocation :Level_Location_Segment-LIMC .
+  :Ctx-10 :hasDate :Level_Date_Day-12February2020 .
+  :Ctx-10 :hasImportance :Level_Importance_Package-Essential .
+  :Ctx-10 ckr:hasAssertedModule :Ctx-10-mod .
+  
+  :Ctx-11 rdf:type olap:Cell .
+  :Ctx-11 :hasAircraft :Level_Aircraft_Model-A380 .
+  :Ctx-11 :hasLocation :Level_Location_Segment-LIMC .
+  :Ctx-11 :hasDate :Level_Date_Day-12February2020 .
+  :Ctx-11 :hasImportance :Level_Importance_Importance-FlightCritical .
+  :Ctx-11 ckr:hasAssertedModule :Ctx-11-mod .
+  
+  :Ctx-12 rdf:type olap:Cell .
+  :Ctx-12 :hasAircraft :Level_Aircraft_Model-A380 .
+  :Ctx-12 :hasLocation :Level_Location_Segment-LIMC .
+  :Ctx-12 :hasDate :Level_Date_Day-13February2020 .
+  :Ctx-12 :hasImportance :Level_Importance_Importance-FlightCritical .
+  :Ctx-12 ckr:hasAssertedModule :Ctx-12-mod .
+  
+  :Ctx-13 rdf:type olap:Cell .
+  :Ctx-13 :hasAircraft :Level_Aircraft_Model-A380 .
+  :Ctx-13 :hasLocation :Level_Location_Segment-LIMC .
+  :Ctx-13 :hasDate :Level_Date_Day-13February2020 .
+  :Ctx-13 :hasImportance :Level_Importance_Importance-Restriction .
+  :Ctx-13 ckr:hasAssertedModule :Ctx-13-mod .
+}

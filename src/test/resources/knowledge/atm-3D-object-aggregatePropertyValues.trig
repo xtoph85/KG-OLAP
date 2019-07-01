@@ -1,0 +1,37 @@
+@prefix xml:  <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix ckr:  <http://dkm.fbk.eu/ckr/meta#> .
+@prefix olap: <http://dkm.fbk.eu/ckr/olap-model#> .
+@prefix cube: <http://example.org/kgolap/cube-model#> .
+@prefix :  <http://example.org/kgolap/object-model#> .
+
+cube:Ctx-0-mod {
+  :x rdf:type :GroupedType .
+}
+
+cube:Ctx-11-mod {
+  :x :a :m1 .
+  :x :b :c1 .
+  :y :a :m1 .
+  :y :b :c2 .
+  :y :c :c2 .
+  :z :a :m3 .
+  
+  :y rdf:type :GroupedType .
+  
+  :x :measure "10"^^xsd:int .
+  :x :measure "20"^^xsd:int .
+  :y :measure "40"^^xsd:int .
+  :y :measure "50"^^xsd:int .
+  :z :measure "60"^^xsd:int .
+  :z :measure "120"^^xsd:int .
+}
+
+cube:Ctx-12-mod {
+  :x :a :m2 .
+  :y :a :m2 .
+  :z :a :m6 .
+}
