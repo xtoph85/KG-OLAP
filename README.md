@@ -1,1 +1,1 @@
-# KG-OLAP
+# Knowledge Graph OLAP (KG-OLAP)
