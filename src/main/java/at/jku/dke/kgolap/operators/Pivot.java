@@ -74,7 +74,7 @@ public class Pivot extends Statement {
       + "  {\n"
       + "    SELECT ?m ?r ?x WHERE {\n"
       + "      {\n"
-      + "        SELECT ?ctx ?m ?x WHERE {\n"
+      + "        SELECT ?m ?r ?x WHERE {\n"
       + "          GRAPH ckr:global {\n"
       + "            ?ctx ckr:hasAssertedModule ?m .\n"
       + "            ?ctx " + this.dimensionProperty + " ?x .\n"
@@ -83,25 +83,19 @@ public class Pivot extends Statement {
     if(!granularityLevel.isEmpty()) {
       sparql.append(
           granularityLevelBindings
-        + "          }\n"
       );
     }
 
     if(context != null) {
       sparql.append(
-          "      FILTER(?ctx = " + context + ")\n"
+          "            FILTER(?ctx = " + context + ")\n"
       );
     }
     
-    sparql.append(
-        "        }\n"
-      + "      }\n"
-    );
+    sparql.append("          }\n");
     
     sparql.append(
-        "      {\n"
-      + "        SELECT ?ctx ?m ?r WHERE {\n"
-      + "          GRAPH <ckr:global-inf> {\n"
+        "          GRAPH <ckr:global-inf> {\n"
       + "            ?inf ckr:closureOf ?ctx .\n"
       + "          }\n"
       + "          GRAPH ?inf {\n"
@@ -114,19 +108,19 @@ public class Pivot extends Statement {
           "          GRAPH ?d {\n"
         + "            ?r " + this.selectionProperty + " " + this.selectionResource + " .\n"
         + "          }\n"
+        + "        }\n"
+        + "      }\n"
       );
     }
     
     sparql.append(
-        "          {\n"
-      + "            GRAPH ?m {\n"
-      + "              ?r ?p ?o .\n"
-      + "            }\n"
-      + "          } UNION {\n"
-      + "            GRAPH ?m {\n"
-      + "              ?o ?p ?r .\n"
-      + "            }\n"
-      + "          }\n"
+        "      {\n"
+      + "        GRAPH ?m {\n"
+      + "          ?r ?p ?o .\n"
+      + "        }\n"
+      + "      } UNION {\n"
+      + "        GRAPH ?m {\n"
+      + "          ?o ?p ?r .\n"
       + "        }\n"
       + "      }\n"
       + "    }\n"

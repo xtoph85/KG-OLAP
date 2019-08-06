@@ -178,7 +178,7 @@ public class GroupByProperties extends Statement {
           + "          GRAPH ?m2 {\n"
           + "            ?r rdf:type " + this.groupedResourceClass  + " .\n"
           + "          }\n" : "")
-          + "          BIND(IRI(CONCAT(STR(obj:), SHA512(CONCAT(" + generatedGroupingHash + ")))) AS ?gr)\n"
+          + "          BIND(IRI(CONCAT(STR(obj:), SHA512(CONCAT(STR(" + this.context + "), " + generatedGroupingHash + ")))) AS ?gr)\n"
           + "        }\n"
           + "      }\n"
           + "      BIND(?m AS ?g)\n"
@@ -215,7 +215,7 @@ public class GroupByProperties extends Statement {
           + "                  GRAPH ?m2 {\n"
           + "                    ?a rdf:type " + this.groupedResourceClass  + " .\n"
           + "                  }\n" : "")
-          + "                  BIND(IRI(CONCAT(STR(obj:), SHA512(CONCAT(" + groupingPropertyHash_x + ")))) AS ?x)\n"
+          + "                  BIND(IRI(CONCAT(STR(obj:), SHA512(CONCAT(STR(" + this.context + "), " + groupingPropertyHash_x + ")))) AS ?x)\n"
           + "                }\n"
           + "              }\n"
           + "              OPTIONAL {\n"
@@ -231,7 +231,7 @@ public class GroupByProperties extends Statement {
           + "                  GRAPH ?m4 {\n"
           + "                    ?d rdf:type " + this.groupedResourceClass  + " .\n"
           + "                  }\n" : "")
-          + "                  BIND(IRI(CONCAT(STR(obj:), SHA512(CONCAT(" + groupingPropertyHash_y + ")))) AS ?y)\n"
+          + "                  BIND(IRI(CONCAT(STR(obj:), SHA512(CONCAT(STR(" + this.context + "), " + groupingPropertyHash_y + ")))) AS ?y)\n"
           + "                }\n"
           + "              }\n"
           + "            }\n"
@@ -379,7 +379,7 @@ public class GroupByProperties extends Statement {
           + "          GRAPH ?m2 {\n"
           + "            ?r rdf:type " + this.groupedResourceClass  + " .\n"
           + "          }\n" : "")
-          + "          BIND(IRI(CONCAT(STR(obj:), SHA512(CONCAT(" + generatedGroupingHash + ")))) AS ?gr)\n"
+          + "          BIND(IRI(CONCAT(STR(obj:), SHA512(CONCAT(STR(?ctx), " + generatedGroupingHash + ")))) AS ?gr)\n"
           + "        }\n"
           + "      }\n"
           + "      BIND(?m AS ?g)\n"
@@ -419,7 +419,7 @@ public class GroupByProperties extends Statement {
           + "                  GRAPH ?m2 {\n"
           + "                    ?a rdf:type " + this.groupedResourceClass  + " .\n"
           + "                  }\n" : "")
-          + "                  BIND(IRI(CONCAT(STR(obj:), SHA512(CONCAT(" + groupingPropertyHash_x + ")))) AS ?x)\n"
+          + "                  BIND(IRI(CONCAT(STR(obj:), SHA512(CONCAT(STR(?ctx), " + groupingPropertyHash_x + ")))) AS ?x)\n"
           + "                }\n"
           + "              }\n"
           + "              OPTIONAL {\n"
@@ -435,7 +435,7 @@ public class GroupByProperties extends Statement {
           + "                  GRAPH ?m4 {\n"
           + "                    ?d rdf:type " + this.groupedResourceClass  + " .\n"
           + "                  }\n" : "")
-          + "                  BIND(IRI(CONCAT(STR(obj:), SHA512(CONCAT(" + groupingPropertyHash_y + ")))) AS ?y)\n"
+          + "                  BIND(IRI(CONCAT(STR(obj:), SHA512(CONCAT(STR(?ctx), " + groupingPropertyHash_y + ")))) AS ?y)\n"
           + "                }\n"
           + "              }\n"
           + "            }\n"

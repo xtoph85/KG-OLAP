@@ -755,6 +755,29 @@ public class KGOLAPCube {
     return this;
   }
   
+  public KGOLAPCube reify(String context, String reifiedProperty) {
+    Reification reification = new Reification(tempRepository, this.getSparqlPrefixes());
+    
+    // operation's benchmarking mode is equal to cube's
+    reification.setBenchmarkingMode(inBenchmarkingMode);
+    
+    reification.setContext(context);
+      
+    reification.setReificationPredicate(reifiedProperty);
+    
+    if(this.useSPARQLUpdateStatements) {
+      reification.executeUpdate();
+    } else {
+      if(this.executeInMemory) {
+        reification.executeInMemory();
+      } else {
+        reification.execute();
+      }
+    }
+    
+    return this;
+  }
+  
   public KGOLAPCube reify(Map<String,String> aggregationLevel, String reifiedProperty) {
     Reification reification = new Reification(tempRepository, this.getSparqlPrefixes());
     

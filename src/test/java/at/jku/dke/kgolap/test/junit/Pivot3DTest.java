@@ -99,10 +99,10 @@ public class Pivot3DTest extends OperatorTest {
     assertTrue(repositoriesContainSameNumberOfTriples(baseRepo, tempRepo));
   }
     
-  @Test
-  public void testPivotWithContext() {
-    this.getKGOLAPCube().pivot("cube:Ctx-11", "cube:hasLocation", "rdf:type", "obj:GroupedType", "obj:hasLocation");
-  }
+//  @Test
+//  public void testPivotWithContext() {
+//    this.getKGOLAPCube().pivot("cube:Ctx-11", "cube:hasLocation", "rdf:type", "obj:GroupedType", "obj:hasLocation");
+//  }
   
   @Test
   public void testPivotWithGranularityLevel() {
