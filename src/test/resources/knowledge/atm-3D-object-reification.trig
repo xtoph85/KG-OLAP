@@ -1,0 +1,18 @@
+@prefix xml:  <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix ckr:  <http://dkm.fbk.eu/ckr/meta#> .
+@prefix olap: <http://dkm.fbk.eu/ckr/olap-model#> .
+@prefix cube: <http://example.org/kgolap/cube-model#> .
+@prefix :  <http://example.org/kgolap/object-model#> .
+
+cube:Ctx-11-mod {
+  :a :usage :b .
+  :c :usage :d .
+}
+
+cube:Ctx-12-mod {
+  :x :usage :y .
+}

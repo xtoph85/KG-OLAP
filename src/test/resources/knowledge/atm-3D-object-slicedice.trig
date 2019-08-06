@@ -1,0 +1,163 @@
+@prefix xml:  <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix ckr:  <http://dkm.fbk.eu/ckr/meta#> .
+@prefix olap: <http://dkm.fbk.eu/ckr/olap-model#> .
+@prefix cube: <http://example.org/kgolap/cube-model#> .
+@prefix :  <http://example.org/kgolap/object-model#> .
+
+cube:Ctx-0-mod {
+  :Runway rdfs:subClassOf :RunwayTaxiway .
+  :Taxiway rdfs:subClassOf :RunwayTaxiway .
+  
+  :isSituatedAt rdf:type owl:ObjectProperty ;
+                rdfs:range :AirportHeliport .
+  
+  :availability rdf:type owl:ObjectProperty ;
+                rdfs:range :ManoeuvringAreaAvailability .
+  
+  :warning rdf:type owl:ObjectProperty ;
+           rdfs:domain :ManoeuvringAreaAvailability .
+  
+  :warningAdjacent rdf:type owl:ObjectProperty ;
+                   rdfs:domain :ManoeuvringAreaAvailability ;
+                   rdfs:range xsd:boolean .
+  
+  :operationalStatus rdf:type owl:ObjectProperty ;
+                     rdfs:domain :ManoeuvringAreaAvailability .
+  
+  
+  :usage rdf:type owl:ObjectProperty ;
+         rdfs:domain :ManoeuvringAreaAvailability ;
+         rdfs:range :ManoeuvringAreaUsage .
+  
+  :usageType rdf:type owl:ObjectProperty ;
+             rdfs:domain :ManoeuvringAreaUsage .
+  
+  :operation rdf:type owl:ObjectProperty ;
+             rdfs:domain :ManoeuvringAreaUsage .
+  
+  :aircraft rdf:type owl:ObjectProperty ;
+            rdfs:domain :ManoeuvringAreaUsage ;
+            rdfs:range :AircraftCharacteristic .
+  
+  :weight rdf:type owl:ObjectProperty ;
+          rdfs:domain :AircraftCharacteristic .
+  
+  :weightInterpretation rdf:type owl:ObjectProperty ;
+                        rdfs:domain :AircraftCharacteristic .
+  
+  :wingspan rdf:type owl:ObjectProperty ;
+            rdfs:domain :AircraftCharacteristic .
+  
+  :wingspanInterpretation rdf:type owl:ObjectProperty ;
+                          rdfs:domain :AircraftCharacteristic .
+  
+  
+  :contaminant rdf:type owl:ObjectProperty ;
+               rdfs:range :SurfaceContamination .
+               
+  :depth rdf:type owl:ObjectProperty ;
+         rdfs:domain :SurfaceContamination .
+  
+  :layer rdf:type owl:ObjectProperty ;
+         rdfs:domain :SurfaceContamination ;
+         rdfs:range :SurfaceContaminationLayer .
+  
+  :contaminationType rdf:type owl:ObjectProperty ;
+                     rdfs:domain :SurfaceContaminationLayer .
+                     
+  :compact_snow :grouping :snow .
+  :dry_snow :grouping :snow .
+  
+  
+  :frequency rdf:type owl:ObjectProperty ;
+             rdfs:domain :VOR .
+}
+
+cube:Ctx-1-mod {
+  :airportLOWW rdf:type :AirportHeliport .
+  :vorLNZ rdf:type :VOR .
+}
+
+cube:Ctx-2-mod {
+  :vorLNZ :frequency "116.8"^^xsd:double .
+}
+
+cube:Ctx-3-mod {
+  :runway1634 rdf:type :Runway ;
+              :isSituatedAt :airportLOWW .
+  :taxiway10004 rdf:type :Taxiway ;
+                :isSituatedAt :airportLOWW .
+}
+
+cube:Ctx-4-mod {
+  :runway1634 :contaminant :runway1634-contam265 .
+  :runway1634-contam265 :depth "0.2"^^xsd:double .
+}
+
+cube:Ctx-5-mod {
+  :runway1634 :availability :runway1634-avail241 .
+  :runway1634-avail241 :operationalStatus :closed .
+  :runway1634-avail241 :usage :runway1634-usage241-1 .
+  :runway1634-usage241-1 :usageType :forbid .
+  :runway1634-usage241-1 :operation :landing .
+  :runway1634-usage241-1 :aircraft :characteristic556 .
+  :characteristic556 :weight "140"^^xsd:double .
+  :characteristic556 :weightInterpretation :above .
+}
+
+cube:Ctx-6-mod {
+  :taxiway10004 :availability :taxiway10004-avail352 .
+  :taxiway10004-avail352 :operationalStatus :closed .
+  :taxiway10004-avail352 :usage :taxiway10004-usage352-1 .
+  :taxiway10004-usage352-1 :usageType :forbid .
+  :taxiway10004-usage352-1 :aircraft :characteristic677 .
+  :characteristic677 :weight "150"^^xsd:double .
+  :characteristic677 :weightInterpretation :above .
+  :taxiway10004-avail352 :usage :taxiway10004-usage352-2 .
+  :taxiway10004-usage352-2 :usageType :allow .
+  :taxiway10004-usage352-2 :aircraft :characteristic723 .
+  :characteristic723 :wingspan "8"^^xsd:double .
+  :characteristic723 :wingspanInterpretation :below .
+}
+
+cube:Ctx-7-mod {
+  :runway1634 :availability :runway1634-avail528 .
+  :runway1634-avail528 :warning :inspection .
+  :runway1634-avail528 :warningAdjacent true .
+}
+
+cube:Ctx-8-mod {  
+  :r rdfs:domain :c ;
+     rdfs:range :d .
+  
+  :x :r :y .
+  
+  :t rdf:type :c .
+  :u rdf:type :d .
+}
+
+cube:Ctx-9-mod {
+  :q :r :s .
+}
+
+cube:Ctx-10-mod {
+  :q :r :s .
+}
+
+cube:Ctx-11-mod {
+  :c rdfs:subClassOf :a .
+}
+
+cube:Ctx-12-mod {
+  :d rdfs:subClassOf :b .
+}
+
+cube:Ctx-13-mod {
+  :ef :de :eb .
+}
+
+

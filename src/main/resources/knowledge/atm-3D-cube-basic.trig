@@ -1,0 +1,98 @@
+@prefix xml:  <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix ckr:  <http://dkm.fbk.eu/ckr/meta#> .
+@prefix olap: <http://dkm.fbk.eu/ckr/olap-model#> .
+@prefix cube: <http://example.org/kgolap/cube-model#> .
+@prefix obj:  <http://example.org/kgolap/object-model#> .
+
+ckr:global {
+  olap:DimensionAttributeValue rdf:type owl:Class ;
+                               rdfs:subClassOf ckr:AttributeValue . 
+    
+  olap:Cell rdf:type owl:Class ;
+            rdfs:subClassOf ckr:Context .
+    
+  olap:hasDimensionAttributeValue rdf:type    owl:ObjectProperty ;
+                                  rdfs:range  olap:DimensionAttributeValue ;
+                                  rdfs:domain olap:Cell .
+
+  olap:atLevel rdf:type owl:ObjectProperty ;
+               rdfs:domain olap:DimensionAttributeValue ;
+               rdfs:range olap:Level .
+  
+  olap:covers rdf:type owl:ObjectProperty ;
+              rdfs:range  olap:Cell ;
+              rdfs:domain olap:Cell .
+
+  ckr:hasAssertedModule rdf:type owl:ObjectProperty ;
+                        rdfs:subPropertyOf ckr:hasModule ;
+                        rdfs:domain ckr:Context ;
+                        rdfs:range ckr:Module .
+
+  olap:directlyRollsUpTo rdf:type owl:ObjectProperty ;
+                         rdfs:subPropertyOf olap:rollsUpTo .
+  
+  olap:hasDimensionAttributeValue rdf:type owl:ObjectProperty ;
+                                  rdfs:range olap:DimensionAttributeValue ;
+                                  rdfs:domain olap:Cell .
+
+  olap:rollsUpTo rdf:type owl:ObjectProperty .
+
+  olap:rollsUpTo owl:propertyChainAxiom ( olap:rollsUpTo olap:rollsUpTo ) . 
+}
+
+ckr:global {
+  cube:Aircraft rdf:type owl:Class, owl:ObjectProperty ;
+            rdfs:subClassOf olap:DimensionAttributeValue .
+  cube:hasAircraft rdf:type owl:FunctionalProperty, owl:ObjectProperty ;
+               rdfs:range cube:Aircraft ;
+               rdfs:subPropertyOf olap:hasDimensionAttributeValue .
+                  
+  cube:Location rdf:type owl:Class, owl:ObjectProperty ;
+            rdfs:subClassOf olap:DimensionAttributeValue .
+  cube:hasLocation rdf:type owl:FunctionalProperty, owl:ObjectProperty ;
+               rdfs:range cube:Location ;
+               rdfs:subPropertyOf olap:hasDimensionAttributeValue .
+  
+  cube:Date rdf:type owl:Class, owl:ObjectProperty ;
+        rdfs:subClassOf olap:DimensionAttributeValue .
+  cube:hasDate rdf:type owl:FunctionalProperty, owl:ObjectProperty ;
+           rdfs:range cube:Date ;
+           rdfs:subPropertyOf olap:hasDimensionAttributeValue .
+}
+
+ckr:global {
+  cube:Level_Aircraft_All rdf:type olap:Level, owl:NamedIndividual .
+  cube:Level_Aircraft_Type rdf:type olap:Level, owl:NamedIndividual ;
+                       olap:directlyRollsUpTo cube:Level_Aircraft_All .
+  cube:Level_Aircraft_Model rdf:type olap:Level, owl:NamedIndividual ;
+                        olap:directlyRollsUpTo cube:Level_Aircraft_Type .
+  
+  cube:Level_Location_All rdf:type olap:Level, owl:NamedIndividual .
+  cube:Level_Location_Region rdf:type olap:Level, owl:NamedIndividual ;
+                         olap:directlyRollsUpTo cube:Level_Location_All .
+  cube:Level_Location_Segment rdf:type olap:Level, owl:NamedIndividual ;
+                          olap:directlyRollsUpTo cube:Level_Location_Region .
+  
+  cube:Level_Date_All rdf:type olap:Level, owl:NamedIndividual .
+  cube:Level_Date_Year rdf:type olap:Level, owl:NamedIndividual ;
+                   olap:directlyRollsUpTo cube:Level_Date_All .
+  cube:Level_Date_Month rdf:type olap:Level, owl:NamedIndividual ;
+                    olap:directlyRollsUpTo cube:Level_Date_Year .
+  cube:Level_Date_Day rdf:type olap:Level, owl:NamedIndividual ;
+                  olap:directlyRollsUpTo cube:Level_Date_Month .
+}
+
+ckr:global {
+  cube:Level_Aircraft_All-All rdf:type cube:Aircraft, owl:NamedIndividual ;
+                          olap:atLevel cube:Level_Aircraft_All .
+                          
+  cube:Level_Location_All-All rdf:type cube:Location, owl:NamedIndividual ;
+                          olap:atLevel cube:Level_Location_All .
+                          
+  cube:Level_Date_All-All rdf:type cube:Date, owl:NamedIndividual ;
+                      olap:atLevel cube:Level_Date_All .
+}
