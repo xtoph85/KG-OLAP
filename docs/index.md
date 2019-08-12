@@ -13,6 +13,21 @@ The KG-OLAP system consists of two repositories, namely base and temporary repos
 
 ![Architecture](img/architecture.png)
 
+The [RDFpro](https://github.com/dkmfbk/rdfpro) rule inference engine computes context coverage as well as the
+materialization of inferences and propagation of knowledge across contexts. The current
+implementation, for evaluation purposes, loads the repository into an RDF model in
+main memory, performs inferences, and writes the model back into the repository.
+RDFpro, however, also supports stream-based computation using the Sesame/RDF4J
+RDFHandler interface.
+
+Due to the SPARQL-based implementation of query operations, off-the-shelf RDF
+quad stores may manage base and temporary repositories of a KG-OLAP system. In
+theory, any RDF quad store can be used; the current implementation has been tested
+using Ontotext GraphDB5. Performance optimization was not a concern of this paper
+and is left to future work. In particular, due to the modularized nature of KG-OLAP
+cubes, we expect a parallelized and distributed implementation on multiple server nodes
+to benefit performance.
+
 ## Installation
 
 You can also download pre-compiled binary packages of the KG-OLAP software.
