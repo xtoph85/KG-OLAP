@@ -30,7 +30,7 @@ The KG-OLAP system employs off-the-shelf quad stores, including in-memory stores
 
     user$ graphdb -Xms100g -Xmx100g 
 
-You can also download pre-compiled binary packages of the KG-OLAP software.
+You can download the KG-OLAP Maven project and run `mvn clean package` in order to compile a binary package. You can also download pre-compiled binary packages of the KG-OLAP software.
 
 Download binaries [[ZIP]](../bin/kgolap-1.0.3-bin.zip) [[TAR.GZ]](../bin/kgolap-1.0.3-bin.tar.gz)
 
