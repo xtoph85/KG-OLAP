@@ -10,7 +10,7 @@ The following figure illustrates the difference between traditional OLAP and KG-
 
 
 ## Benchmarks
-The KG-OLAP system comes with a benchmarking feature that allows to run performance experiments. When executed in benchmarking mode, the KG-OLAP system produces two log files for each query execution. The first captures the timestamps of both the beginning and end of certain operations ("wall time"), e.g., the execution of the SPARQL query calculating the "delta" table.
+The KG-OLAP system comes with a benchmarking feature that allows to run performance experiments. When executed in benchmarking mode, the KG-OLAP system produces two log files for each query execution. The first log file captures the timestamps of both the beginning and end of certain operations ("wall time"), e.g., the execution of the SPARQL query calculating the "delta" table. Note that capturing wall time has its drawbacks for microbenchmarking but in this case we think it is acceptable: We are not dealing in the range of milliseconds but several seconds to minutes for large datasets with millions of statements. Benchmarking mode also captures elapsed CPU time before and after operations. The second log file captures general statistics about datasets and query operations, e.g., number of total statements, number of computed delta statements.
 
 The `DemoRunner` class can be used to run performance experiments.
 
@@ -58,3 +58,15 @@ The GraphDB instance comprised two repositories -- base and temporary -- with th
                 owlim:read-only "false" ;
             ]
         ].
+        
+The GitHub repository contains log files from our performance experiments as a reference benchmark in the `benchmarks` directory. Note that we provide the uncleaned log files.
+
+We also provide the generated datasets and resulting delta tables as downloads:
+
+- Slice/Dice (3D/4D)
+- Merge Union (3D/4D)
+- Triple-Generating Abstraction
+- Individual-Generating Abstraction
+- Value-Generating Abstraction
+- Reification
+- Pivot
