@@ -26,7 +26,7 @@ theory, any RDF quad store can be used; the current implementation has been test
 using [Ontotext GraphDB](https://www.ontotext.com/products/graphdb/). 
 
 ## Installation
-The KG-OLAP system employs off-the-shelf quad stores. You have to create a base and temporary repository before creating a KG-OLAP cube. We recommend using GraphDB with heap size explicitly set:
+The KG-OLAP system employs off-the-shelf quad stores, including in-memory stores. You have to create a base and temporary repository before creating a KG-OLAP cube. We recommend using GraphDB with heap size explicitly set:
 
     user$ graphdb -Xms100g -Xmx100g 
 
