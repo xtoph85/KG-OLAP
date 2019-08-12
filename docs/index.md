@@ -8,8 +8,10 @@ The following figure illustrates the difference between (a) traditional OLAP and
 
 ![OLAP vs. KG-OLAP](img/kgolap-overview.png)
 
-## Implementation
+# Implementation
 
+
+## Installation
 
 You can also download pre-compiled binary packages of the KG-OLAP software.
 
