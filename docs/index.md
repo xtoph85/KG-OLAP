@@ -2,7 +2,7 @@ A knowledge graph (KG) represents real-world entities and their relationships wi
 
 Knowledge Graph OLAP (KG-OLAP) adapts the OLAP cube model for working with contextualized KGs. In particular, the roll-up operation from traditional OLAP is decomposed into a merge and an abstraction operation. The merge operation corresponds to the selection of knowledge from different contexts whereas abstraction replaces entities with more general entities. The result of such a query is a more abstract, high-level view on the contextualized KG.
 
-The following figure illustrates the difference between traditional OLAP and KG-OLAP. In traditional OLAP, each cell has numeric measures and the cell's dimension attributes characterize a fact of interest. In KG-OLAP, each cell of the OLAP cube comprises an RDF graph and the cell's dimension attributes represent the context which the knowledge is relevant for.
+The following figure illustrates the difference between (a) traditional OLAP and (b) KG-OLAP. In traditional OLAP, each cell has numeric measures and the cell's dimension attributes characterize a fact of interest. In KG-OLAP, each cell of the OLAP cube comprises an RDF graph and the cell's dimension attributes represent the context which the knowledge is relevant for.
 
 ![OLAP vs. KG-OLAP](img/kgolap-overview.png)
 
