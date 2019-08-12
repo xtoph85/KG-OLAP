@@ -61,7 +61,7 @@ The GraphDB instance comprised two repositories -- base and temporary -- with th
             ]
         ].
         
-The GitHub repository contains log files from our performance experiments as a reference benchmark in the `benchmarks` directory. Note that we provide the uncleaned log files: In some cases, the first benchmark runs produced exceptional results which were probably down to a slowdown in the GraphDB instance after multiple runs. Subsequent results showed the expected behavior. We exclude the exceptional results from statistical evaluation but keep them in the log for transparency's sake. You will find the R scripts for evaluating the log files, which also perform rudimentary data cleaning tasks.
+The GitHub repository contains log files from our performance experiments as a reference benchmark in the `benchmarks` directory. Note that we provide the uncleaned log files: In some cases, the first benchmark runs produced exceptional results which were probably down to a slowdown in the GraphDB instance after multiple runs. Subsequent results showed the expected behavior. We exclude the exceptional results from statistical evaluation but keep them in the log for transparency's sake. You will find the R scripts used for evaluating the log files in the `benchmarks/r` directory on the GitHub repository, which also perform rudimentary data cleaning tasks.
 
 We also provide the generated datasets and resulting delta tables as downloads:
 
