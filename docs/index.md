@@ -9,7 +9,9 @@ The following figure illustrates the difference between (a) traditional OLAP and
 ![OLAP vs. KG-OLAP](img/kgolap-overview.png)
 
 # Implementation
+The KG-OLAP system consists of two repositories, namely base and temporary repository. The base repository contains the base data which are periodically updated by extract, transform, and load (ETL) routines. The base repository contains both schema and instance data of a KG-OLAP cube. The temporary repository contains a working copy of (selected partitions of) the KG-OLAP cube from the base repository. Using the slice-and-dice operator, an analyst selects a subset of the data from the base repository to be loaded into the temporary repository for further analysis. Merge, abstract, reification, and pivoting operations are then performed on the temporary repository.
 
+![Architecture](img/architecture.png)
 
 ## Installation
 
