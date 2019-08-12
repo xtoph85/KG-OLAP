@@ -7,7 +7,13 @@ The following figure illustrates the difference between traditional OLAP and KG-
 ![OLAP vs. KG-OLAP](img/kgolap-overview.png)
 
 ## Benchmarks
-The KG-OLAP system comes with a benchmarking feature that allows to run performance experiments. A number of predefined (procedurally generated) datasets and corresponding benchmark queries demonstrate the KG-OLAP system. Using these datasets and queries, we ran performance experiments on a virtual CentOS 6.8 machine with four cores of an Intel Xeon CPU E5-2640 v4 with 2.4 GHz, hosting a GraphDB 8.9 instance. The Java Virtual Machine(JVM) of the GraphDB instance ran with 100 GB heap space. The JVM of the KG-OLAP cube, which conducts rule evaluation and caches query results, ran with 20 GB heap space.
+The KG-OLAP system comes with a benchmarking feature that allows to run performance experiments. When executed in benchmarking mode, the KG-OLAP system produces two log files for each query execution. The first captures the timestamps of both the beginning and end of certain operations ("wall time"), e.g., the execution of the SPARQL query calculating the "delta" table.
+
+The `DemoRunner` class can be used to run performance experiments.
+
+A number of predefined (procedurally generated) datasets and corresponding benchmark queries demonstrate the KG-OLAP system.
+
+Using the predefined datasets and queries, we ran performance experiments on a virtual CentOS 6.8 machine with four cores of an Intel Xeon CPU E5-2640 v4 with 2.4 GHz, hosting a GraphDB 8.9 instance. The Java Virtual Machine(JVM) of the GraphDB instance ran with 100 GB heap space. The JVM of the KG-OLAP cube, which conducts rule evaluation and caches query results, ran with 20 GB heap space.
 
 The GraphDB instance comprised two repositories -- base and temporary -- with the following configuration; please refer to the [GraphDB manual](http://graphdb.ontotext.com/documentation/8.9/free/configuring-a-repository.html "Configuring a repository") for further information. The entity index size was 30 000 000 and the entity identifier size was 32 bits. Context index, predicate list, and literal index were enabled. Reasoning and inconsistency checkswere disabled; the KG-OLAP implementation takes care of reasoning via RDFpro rule evaluation.
 
