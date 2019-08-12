@@ -10,6 +10,9 @@ The following figure illustrates the difference between (a) traditional OLAP and
 
 ## Implementation
 
+
+You can also download pre-compiled binary packages of the KG-OLAP software.
+
 Binaries [[ZIP]](../bin/kgolap-1.0.3-bin.zip) [[TAR.GZ]](../bin/kgolap-1.0.3-bin.tar.gz)
 
 ## Benchmarks
