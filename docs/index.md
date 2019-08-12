@@ -30,7 +30,7 @@ The GraphDB instance comprised two repositories -- base and temporary -- with th
                 owlim:entity-index-size "30000000" ;
                 owlim:entity-id-size  "32" ;
                 owlim:imports "" ;
-              	owlim:repository-type "file-repository" ;
+                owlim:repository-type "file-repository" ;
                 owlim:ruleset "empty" ;
                 owlim:storage-folder "storage" ;
  
