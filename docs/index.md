@@ -20,6 +20,13 @@ main memory, performs inferences, and writes the model back into the repository.
 RDFpro, however, also supports stream-based computation using the Sesame/RDF4J
 RDFHandler interface.
 
+The operations are realized as SPARQL \lstinline{SELECT} statements that return a "delta" table, i.e., a tuple query result where each tuple represents an RDF quad along with the indication of the operation (-, +), which specifies whether the quad must be added to or deleted from the target repository in order to obtain the result. The following extract of a delta table shows an example of a delete and an insert delta tuple, which in that case corresponds to a triple-generating abstraction that replaces runway individuals by the airport individual that the runway is situated at.
+
+`?s` | `?p` | `?o` | `?g` | `?op` 
+:-:|:--:|:--:|:--:|:---:
+`obj:Runway16/34` | `obj:contaminant` | `obj:cont\#265` | `cube:Ctx-1-mod` | `"-"`
+`obj:airportLOWW` | `obj:contaminant` | `obj:cont\#265` | `cube:Ctx-1-mod` | `"+"`
+
 Due to the SPARQL-based implementation of query operations, off-the-shelf RDF
 quad stores may manage base and temporary repositories of a KG-OLAP system. In
 theory, any RDF quad store can be used; the current implementation has been tested
@@ -32,7 +39,7 @@ The KG-OLAP system employs off-the-shelf quad stores, including in-memory stores
 
 You can download the KG-OLAP Maven project and run `mvn clean package` in order to compile a binary package. You can also download pre-compiled binary packages of the KG-OLAP software.
 
-Download binaries [[ZIP]](../bin/kgolap-1.0.3-bin.zip) [[TAR.GZ]](../bin/kgolap-1.0.3-bin.tar.gz)
+**Download binaries** [[ZIP]](../bin/kgolap-1.0.3-bin.zip) [[TAR.GZ]](../bin/kgolap-1.0.3-bin.tar.gz)
 
 ## Benchmarks
 The KG-OLAP system comes with a benchmarking feature that allows to run performance experiments. When executed in benchmarking mode, the KG-OLAP system produces two log files for each query execution. The first log file captures the timestamps of both the beginning and end of certain operations ("wall time"), e.g., the execution of the SPARQL query calculating the "delta" table. Note that capturing wall time has its drawbacks for microbenchmarking but in this case we think it is acceptable: We are not dealing in the range of milliseconds but several seconds to minutes for large datasets with millions of statements. Benchmarking mode also captures elapsed CPU time before and after operations. The second log file captures general statistics about datasets and query operations, e.g., number of total statements, number of computed delta statements.
