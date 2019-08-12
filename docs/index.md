@@ -1,4 +1,6 @@
-A knowledge graph (KG) represents real-world entities and their relationships with each other. The thus represented knowledge is often context-dependent, leading to the construction of contextualized KGs. Due to the multidimensional and hierarchical nature of context, the multidimensional OLAP cube model from data analysis is a natural fit for the representation of contextualized KGs. Traditional systems for online analytical processing (OLAP) employ cube models to represent numeric values for further processing using dedicated query operations. 
+# Knowledge Graph OLAP
+
+A *knowledge graph* (KG) represents real-world entities and their relationships with each other. The thus represented knowledge is often context-dependent, leading to the construction of contextualized KGs. Due to the multidimensional and hierarchical nature of context, the multidimensional OLAP cube model from data analysis is a natural fit for the representation of contextualized KGs. Traditional systems for online analytical processing (OLAP) employ cube models to represent numeric values for further processing using dedicated query operations. 
 
 Knowledge Graph OLAP (KG-OLAP) adapts the OLAP cube model for working with contextualized KGs. In particular, the roll-up operation from traditional OLAP is decomposed into a merge and an abstraction operation. The merge operation corresponds to the selection of knowledge from different contexts whereas abstraction replaces entities with more general entities. The result of such a query is a more abstract, high-level view on the contextualized KG.
 
@@ -59,11 +61,11 @@ The GraphDB instance comprised two repositories -- base and temporary -- with th
             ]
         ].
         
-The GitHub repository contains log files from our performance experiments as a reference benchmark in the `benchmarks` directory. Note that we provide the uncleaned log files.
+The GitHub repository contains log files from our performance experiments as a reference benchmark in the `benchmarks` directory. Note that we provide the uncleaned log files: In some cases, the first benchmark runs produced exceptional results which were probably down to a slowdown in the GraphDB instance after multiple runs. Subsequent results showed the expected behavior. We exclude the exceptional results from statistical evaluation but keep them in the log for transparency's sake. You will find the R scripts used for evaluating the log files in the `benchmarks/r` directory on the GitHub repository, which also perform rudimentary data cleaning tasks.
 
 We also provide the generated datasets and resulting delta tables as downloads:
 
-- Slice/Dice (3D/4D)
+- Slice/Dice ([3D](https://final.at/kg-olap/benchmarks-3D-slicedice.tar.gz)/[4D](https://final.at/kg-olap/benchmarks-4D-slicedice.tar.gz))
 - Merge Union (3D/4D)
 - Triple-Generating Abstraction
 - Individual-Generating Abstraction
