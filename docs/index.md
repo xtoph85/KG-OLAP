@@ -4,12 +4,42 @@ A *knowledge graph* (KG) represents real-world entities and their relationships 
 
 Knowledge Graph OLAP (KG-OLAP) adapts the OLAP cube model for working with contextualized KGs. In particular, the roll-up operation from traditional OLAP is decomposed into a merge and an abstraction operation. The merge operation corresponds to the selection of knowledge from different contexts whereas abstraction replaces entities with more general entities. The result of such a query is a more abstract, high-level view on the contextualized KG.
 
-The following figure illustrates the difference between (a) traditional OLAP and (b) KG-OLAP. In traditional OLAP, each cell has numeric measures and the cell's dimension attributes characterize a fact of interest. In KG-OLAP, each cell of the OLAP cube comprises an RDF graph and the cell's dimension attributes represent the context which the knowledge is relevant for.
+The following figure illustrates the difference between (a) traditional OLAP and (b) KG-OLAP. In traditional OLAP, each cell has numeric measures and the cell's dimension attributes characterize a fact of interest. In KG-OLAP, each cell of the OLAP cube comprises an RDF graph and the cell's dimension attributes represent the context which the knowledge is relevant for. As opposed to traditional OLAP systems, where summarization applies an *aggregation* function to a group of numeric values, summarization in KG-OLAP first merges graphs from different contexts and then applies an *abstraction* function to the merged graph. In the example below, entities are replaced by a more abstract grouping (G).
 
 ![OLAP vs. KG-OLAP](img/kgolap-overview.png)
 
-## Implementation
+# Implementation
+The KG-OLAP system consists of two repositories, namely base and temporary repository. The base repository contains the base data which are periodically updated by extract, transform, and load (ETL) routines. The base repository contains both schema and instance data of a KG-OLAP cube. The temporary repository contains a working copy of (selected partitions of) the KG-OLAP cube from the base repository. Using the slice-and-dice operator, an analyst selects a subset of the data from the base repository to be loaded into the temporary repository for further analysis. Merge, abstract, reification, and pivoting operations are then performed on the temporary repository.
 
+![Architecture](img/architecture.png)
+
+The [RDFpro](https://github.com/dkmfbk/rdfpro) rule inference engine computes context coverage as well as the
+materialization of inferences and propagation of knowledge across contexts. The current
+implementation, for evaluation purposes, loads the repository into an RDF model in
+main memory, performs inferences, and writes the model back into the repository.
+RDFpro, however, also supports stream-based computation using the Sesame/RDF4J
+RDFHandler interface.
+
+The operations are realized as SPARQL \lstinline{SELECT} statements that return a "delta" table, i.e., a tuple query result where each tuple represents an RDF quad along with the indication of the operation (-, +), which specifies whether the quad must be added to or deleted from the target repository in order to obtain the result. The following extract of a delta table shows an example of a delete and an insert delta tuple, which in that case corresponds to a triple-generating abstraction that replaces runway individuals by the airport individual that the runway is situated at.
+
+`?s` | `?p` | `?o` | `?g` | `?op` 
+:-:|:--:|:--:|:--:|:---:
+`obj:Runway16/34` | `obj:contaminant` | `obj:cont#265` | `cube:Ctx-1-mod` | `"-"`
+`obj:airportLOWW` | `obj:contaminant` | `obj:cont#265` | `cube:Ctx-1-mod` | `"+"`
+
+Due to the SPARQL-based implementation of query operations, off-the-shelf RDF
+quad stores may manage base and temporary repositories of a KG-OLAP system. In
+theory, any RDF quad store can be used; the current implementation has been tested
+using [Ontotext GraphDB](https://www.ontotext.com/products/graphdb/). 
+
+## Installation
+The KG-OLAP system employs off-the-shelf quad stores, including in-memory stores. You have to create a base and temporary repository before creating a KG-OLAP cube. We recommend using GraphDB with heap size explicitly set:
+
+    user$ graphdb -Xms100g -Xmx100g 
+
+You can download the KG-OLAP Maven project and run `mvn clean package` in order to compile a binary package. You can also download pre-compiled binary packages of the KG-OLAP software.
+
+**Download binaries** [[ZIP]](../bin/kgolap-1.0.3-bin.zip) [[TAR.GZ]](../bin/kgolap-1.0.3-bin.tar.gz)
 
 ## Benchmarks
 The KG-OLAP system comes with a benchmarking feature that allows to run performance experiments. When executed in benchmarking mode, the KG-OLAP system produces two log files for each query execution. The first log file captures the timestamps of both the beginning and end of certain operations ("wall time"), e.g., the execution of the SPARQL query calculating the "delta" table. Note that capturing wall time has its drawbacks for microbenchmarking but in this case we think it is acceptable: We are not dealing in the range of milliseconds but several seconds to minutes for large datasets with millions of statements. Benchmarking mode also captures elapsed CPU time before and after operations. The second log file captures general statistics about datasets and query operations, e.g., number of total statements, number of computed delta statements.
@@ -84,8 +114,8 @@ We also provide the generated datasets and resulting delta tables as downloads:
 
 - Slice/Dice ([3D](https://final.at/kg-olap/benchmarks-3D-slicedice.tar.gz)/[4D](https://final.at/kg-olap/benchmarks-4D-slicedice.tar.gz))
 - Merge Union (3D/[4D](https://final.at/kg-olap/benchmarks-4D-merge.tar.gz))
-- Triple-Generating Abstraction
-- Individual-Generating Abstraction
-- Value-Generating Abstraction
-- Reification
-- Pivot
+- [Triple-Generating Abstraction](https://final.at/kg-olap/benchmarks-abstraction-triplegenerating.tar.gz)
+- [Individual-Generating Abstraction](https://final.at/kg-olap/benchmarks-abstraction-individualgenerating.tar.gz)
+- [Value-Generating Abstraction](https://final.at/kg-olap/benchmarks-4D-abstraction-valuegenerating.tar.gz)
+- [Reification](https://final.at/kg-olap/benchmarks-reification.tar.gz)
+- [Pivot](https://final.at/kg-olap/benchmarks-pivot.tar.gz)
