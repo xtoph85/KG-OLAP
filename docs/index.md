@@ -5,3 +5,8 @@ Knowledge Graph OLAP (KG-OLAP) adapts the OLAP cube model for working with conte
 The following figure illustrates the difference between traditional OLAP and KG-OLAP. In traditional OLAP, each cell has numeric measures and the cell's dimension attributes characterize a fact of interest. In KG-OLAP, each cell of the OLAP cube comprises an RDF graph and the cell's dimension attributes represent the context which the knowledge is relevant for.
 
 ![OLAP vs. KG-OLAP](img/kgolap-overview.png)
+
+## Benchmarks
+The KG-OLAP system comes with a benchmarking feature that allows to run performance experiments. A number of predefined (procedurally generated) datasets and corresponding benchmark queries demonstrate the KG-OLAP system. Using these datasets and queries, we ran performance experiments on a virtual CentOS 6.8 machine with four cores of an Intel Xeon CPU E5-2640 v4 with 2.4 GHz, hosting a GraphDB 8.9 instance. The Java Virtual Machine(JVM) of the GraphDB instance ran with 100 GB heap space. The JVM of the KG-OLAP cube, which conducts rule evaluation and caches query results, ran with 20 GB heap space.
+
+The GraphDB instance comprised two repositories -- base and temporary -- with the following configuration; please refer to the [GraphDB manual](http://graphdb.ontotext.com/documentation/8.9/free/configuring-a-repository.html "Configuring a repository") for further information). The entity index size was 30 000 000 and the entity identifier sizewas 32 bits. Context index, predicate list, and literal index were enabled. Reasoning and inconsistency checkswere disabled; the KG-OLAP implementation takes care of reasoning via RDFpro rule evaluation.
