@@ -24,8 +24,8 @@ The operations are realized as SPARQL \lstinline{SELECT} statements that return 
 
 `?s` | `?p` | `?o` | `?g` | `?op` 
 :-:|:--:|:--:|:--:|:---:
-`obj:Runway16/34` | `obj:contaminant` | `obj:cont\#265` | `cube:Ctx-1-mod` | `"-"`
-`obj:airportLOWW` | `obj:contaminant` | `obj:cont\#265` | `cube:Ctx-1-mod` | `"+"`
+`obj:Runway16/34` | `obj:contaminant` | `obj:cont#265` | `cube:Ctx-1-mod` | `"-"`
+`obj:airportLOWW` | `obj:contaminant` | `obj:cont#265` | `cube:Ctx-1-mod` | `"+"`
 
 Due to the SPARQL-based implementation of query operations, off-the-shelf RDF
 quad stores may manage base and temporary repositories of a KG-OLAP system. In
