@@ -6,6 +6,9 @@ The following figure illustrates the difference between traditional OLAP and KG-
 
 ![OLAP vs. KG-OLAP](img/kgolap-overview.png)
 
+## Implementation
+
+
 ## Benchmarks
 The KG-OLAP system comes with a benchmarking feature that allows to run performance experiments. When executed in benchmarking mode, the KG-OLAP system produces two log files for each query execution. The first captures the timestamps of both the beginning and end of certain operations ("wall time"), e.g., the execution of the SPARQL query calculating the "delta" table.
 
