@@ -9,4 +9,43 @@ The following figure illustrates the difference between traditional OLAP and KG-
 ## Benchmarks
 The KG-OLAP system comes with a benchmarking feature that allows to run performance experiments. A number of predefined (procedurally generated) datasets and corresponding benchmark queries demonstrate the KG-OLAP system. Using these datasets and queries, we ran performance experiments on a virtual CentOS 6.8 machine with four cores of an Intel Xeon CPU E5-2640 v4 with 2.4 GHz, hosting a GraphDB 8.9 instance. The Java Virtual Machine(JVM) of the GraphDB instance ran with 100 GB heap space. The JVM of the KG-OLAP cube, which conducts rule evaluation and caches query results, ran with 20 GB heap space.
 
-The GraphDB instance comprised two repositories -- base and temporary -- with the following configuration; please refer to the [GraphDB manual](http://graphdb.ontotext.com/documentation/8.9/free/configuring-a-repository.html "Configuring a repository") for further information). The entity index size was 30 000 000 and the entity identifier sizewas 32 bits. Context index, predicate list, and literal index were enabled. Reasoning and inconsistency checkswere disabled; the KG-OLAP implementation takes care of reasoning via RDFpro rule evaluation.
+The GraphDB instance comprised two repositories -- base and temporary -- with the following configuration; please refer to the [GraphDB manual](http://graphdb.ontotext.com/documentation/8.9/free/configuring-a-repository.html "Configuring a repository") for further information. The entity index size was 30 000 000 and the entity identifier size was 32 bits. Context index, predicate list, and literal index were enabled. Reasoning and inconsistency checkswere disabled; the KG-OLAP implementation takes care of reasoning via RDFpro rule evaluation.
+
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+    @prefix rep: <http://www.openrdf.org/config/repository#>.
+    @prefix sr: <http://www.openrdf.org/config/repository/sail#>.
+    @prefix sail: <http://www.openrdf.org/config/sail#>.
+    @prefix owlim: <http://www.ontotext.com/trree/owlim#>.
+    
+    [] a rep:Repository ;
+        rep:repositoryID "Base" ;
+        rdfs:label "" ;
+        rep:repositoryImpl [
+            rep:repositoryType "graphdb:FreeSailRepository" ;
+            sr:sailImpl [
+                sail:sailType "graphdb:FreeSail" ;
+            
+                owlim:base-URL "http://dkm.fbk.eu/ckr/meta#" ;
+                owlim:defaultNS "" ;
+                owlim:entity-index-size "30000000" ;
+                owlim:entity-id-size  "32" ;
+                owlim:imports "" ;
+              	owlim:repository-type "file-repository" ;
+                owlim:ruleset "empty" ;
+                owlim:storage-folder "storage" ;
+ 
+                owlim:enable-context-index "true" ;
+  
+                owlim:enablePredicateList "true" ;
+
+                owlim:in-memory-literal-properties "true" ;
+                owlim:enable-literal-index "true" ;
+    
+                owlim:check-for-inconsistencies "false" ;
+                owlim:disable-sameAs  "true" ;
+                owlim:query-timeout  "0" ;
+                owlim:query-limit-results  "0" ;
+                owlim:throw-QueryEvaluationException-on-timeout "false" ;
+                owlim:read-only "false" ;
+            ]
+        ].
