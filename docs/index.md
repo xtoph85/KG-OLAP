@@ -23,7 +23,7 @@ RDFHandler interface.
 Due to the SPARQL-based implementation of query operations, off-the-shelf RDF
 quad stores may manage base and temporary repositories of a KG-OLAP system. In
 theory, any RDF quad store can be used; the current implementation has been tested
-using Ontotext GraphDB5. Performance optimization was not a concern of this paper
+using [Ontotext GraphDB](https://www.ontotext.com/products/graphdb/). Performance optimization was not a concern of this paper
 and is left to future work. In particular, due to the modularized nature of KG-OLAP
 cubes, we expect a parallelized and distributed implementation on multiple server nodes
 to benefit performance.
