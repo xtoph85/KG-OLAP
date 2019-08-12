@@ -15,7 +15,20 @@ The following figure illustrates the difference between (a) traditional OLAP and
 The KG-OLAP system comes with a benchmarking feature that allows to run performance experiments. When executed in benchmarking mode, the KG-OLAP system produces two log files for each query execution. The first log file captures the timestamps of both the beginning and end of certain operations ("wall time"), e.g., the execution of the SPARQL query calculating the "delta" table. Note that capturing wall time has its drawbacks for microbenchmarking but in this case we think it is acceptable: We are not dealing in the range of milliseconds but several seconds to minutes for large datasets with millions of statements. Benchmarking mode also captures elapsed CPU time before and after operations. The second log file captures general statistics about datasets and query operations, e.g., number of total statements, number of computed delta statements.
 
 The `DemoRunner` class can be used to run performance experiments.
-    java 
+    
+    java -Xms20g -Xmx20g 
+         -Djava.io.tmpdir=tmpdir 
+         -Dat.jku.dke.kgolap.demo.benchmark.dir=benchmarks 
+         -Dat.jku.dke.kgolap.demo.benchmark.log=benchmarks/benchmark.log
+         -Dat.jku.dke.kgolap.demo.benchmark.statistics.log=benchmarks/benchmark-statistics.log 
+         -cp bin/*:lib/* at.jku.dke.kgolap.demo.DemoRunner 
+         -s at.jku.dke.kgolap.demo.datasets.DemoDataset3DSmallContextSmallFact  
+         -fb at.jku.dke.kgolap.repo.sesame.SesameHTTPRepoFactory 
+         -ub http://localhost:7200/repositories/Base 
+         -ft at.jku.dke.kgolap.repo.sesame.SesameHTTPRepoFactory 
+         -ut http://localhost:7200/repositories/Temp 
+         -a at.jku.dke.kgolap.demo.analyses.DemoAnalysis3DSliceDice 
+         -i 15 
 
 A number of predefined (procedurally generated) datasets and corresponding benchmark queries demonstrate the KG-OLAP system. Note that while the number of contexts and statements in the generated data sets remain stable, ...
 
