@@ -65,7 +65,7 @@ The GitHub repository contains log files from our performance experiments as a r
 
 We also provide the generated datasets and resulting delta tables as downloads:
 
-- Slice/Dice ([3D](http://final.at/kg-olap/benchmarks-3D-slicedice.tar.gz)  | 4D)
+- Slice/Dice ([3D](https://final.at/kg-olap/benchmarks-3D-slicedice.tar.gz)  | 4D)
 - Merge Union (3D/4D)
 - Triple-Generating Abstraction
 - Individual-Generating Abstraction
