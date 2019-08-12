@@ -27,7 +27,7 @@ The GraphDB instance comprised two repositories -- base and temporary -- with th
     @prefix owlim: <http://www.ontotext.com/trree/owlim#>.
     
     [] a rep:Repository ;
-        rep:repositoryID "Base" ;
+        rep:repositoryID "Base | Temp" ;
         rdfs:label "" ;
         rep:repositoryImpl [
             rep:repositoryType "graphdb:FreeSailRepository" ;
