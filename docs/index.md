@@ -15,8 +15,9 @@ The following figure illustrates the difference between (a) traditional OLAP and
 The KG-OLAP system comes with a benchmarking feature that allows to run performance experiments. When executed in benchmarking mode, the KG-OLAP system produces two log files for each query execution. The first log file captures the timestamps of both the beginning and end of certain operations ("wall time"), e.g., the execution of the SPARQL query calculating the "delta" table. Note that capturing wall time has its drawbacks for microbenchmarking but in this case we think it is acceptable: We are not dealing in the range of milliseconds but several seconds to minutes for large datasets with millions of statements. Benchmarking mode also captures elapsed CPU time before and after operations. The second log file captures general statistics about datasets and query operations, e.g., number of total statements, number of computed delta statements.
 
 The `DemoRunner` class can be used to run performance experiments.
+    java 
 
-A number of predefined (procedurally generated) datasets and corresponding benchmark queries demonstrate the KG-OLAP system.
+A number of predefined (procedurally generated) datasets and corresponding benchmark queries demonstrate the KG-OLAP system. Note that while the number of contexts and statements in the generated data sets remain stable, ...
 
 Using the predefined datasets and queries, we ran performance experiments on a virtual CentOS 6.8 machine with four cores of an Intel Xeon CPU E5-2640 v4 with 2.4 GHz, hosting a GraphDB 8.9 instance. The Java Virtual Machine(JVM) of the GraphDB instance ran with 100 GB heap space. The JVM of the KG-OLAP cube, which conducts rule evaluation and caches query results, ran with 20 GB heap space.
 
