@@ -116,6 +116,6 @@ We also provide the generated datasets and resulting delta tables as downloads:
 - Merge Union ([3D](https://final.at/kg-olap/benchmarks-3D-merge.tar.gz)/[4D](https://final.at/kg-olap/benchmarks-4D-merge.tar.gz))
 - [Triple-Generating Abstraction](https://final.at/kg-olap/benchmarks-abstraction-triplegenerating.tar.gz)
 - [Individual-Generating Abstraction](https://final.at/kg-olap/benchmarks-abstraction-individualgenerating.tar.gz)
-- [Value-Generating Abstraction](https://final.at/kg-olap/benchmarks-4D-abstraction-valuegenerating.tar.gz)
+- [Value-Generating Abstraction](https://final.at/kg-olap/benchmarks-abstraction-valuegenerating.tar.gz)
 - [Reification](https://final.at/kg-olap/benchmarks-reification.tar.gz)
 - [Pivot](https://final.at/kg-olap/benchmarks-pivot.tar.gz)
