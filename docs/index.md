@@ -113,7 +113,7 @@ The GitHub repository contains log files from our performance experiments as a r
 We also provide the generated datasets and resulting delta tables as downloads:
 
 - Slice/Dice ([3D](https://final.at/kg-olap/benchmarks-3D-slicedice.tar.gz)/[4D](https://final.at/kg-olap/benchmarks-4D-slicedice.tar.gz))
-- Merge Union (3D/[4D](https://final.at/kg-olap/benchmarks-4D-merge.tar.gz))
+- Merge Union ([3D](https://final.at/kg-olap/benchmarks-3D-merge.tar.gz)/[4D](https://final.at/kg-olap/benchmarks-4D-merge.tar.gz))
 - [Triple-Generating Abstraction](https://final.at/kg-olap/benchmarks-abstraction-triplegenerating.tar.gz)
 - [Individual-Generating Abstraction](https://final.at/kg-olap/benchmarks-abstraction-individualgenerating.tar.gz)
 - [Value-Generating Abstraction](https://final.at/kg-olap/benchmarks-4D-abstraction-valuegenerating.tar.gz)
