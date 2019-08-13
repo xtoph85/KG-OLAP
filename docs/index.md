@@ -110,7 +110,7 @@ The GraphDB instance comprised two repositories -- base and temporary -- with th
         
 The GitHub repository contains log files from our performance experiments as a reference benchmark in the `benchmarks` directory. Note that we provide the uncleaned log files: In some cases, the first benchmark runs produced exceptional results which were probably down to a slowdown in the GraphDB instance after multiple runs. Subsequent results showed the expected behavior. We exclude the exceptional results from statistical evaluation but keep them in the log for transparency's sake. You will find the R scripts used for evaluating the log files in the `benchmarks/r` directory on the GitHub repository, which also perform rudimentary data cleaning tasks.
 
-We also provide the generated datasets and resulting delta tables as downloads:
+We also provide the generated datasets and resulting delta tables from our performance experiments as downloads:
 
 - Slice/Dice ([3D](https://final.at/kg-olap/benchmarks-3D-slicedice.tar.gz)/[4D](https://final.at/kg-olap/benchmarks-4D-slicedice.tar.gz))
 - Merge Union ([3D](https://final.at/kg-olap/benchmarks-3D-merge.tar.gz)/[4D](https://final.at/kg-olap/benchmarks-4D-merge.tar.gz))
