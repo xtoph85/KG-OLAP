@@ -29,7 +29,6 @@ import eu.fbk.rdfpro.Ruleset;
 public class DefaultKGOLAPCubeFactory extends KGOLAPCubeFactory {
   private static final Logger logger = LoggerFactory.getLogger(DefaultKGOLAPCubeFactory.class);
 
-  @SuppressWarnings("deprecation")
   @Override
   public KGOLAPCube createKGOLAPCube(KGOLAPCubeProperties properties) {
     Repo baseRepository = null;

@@ -22,6 +22,7 @@ import com.sun.management.OperatingSystemMXBean;
 
 import at.jku.dke.kgolap.repo.Repo;
 
+@SuppressWarnings("restriction")
 public abstract class Statement {
   private static final Logger logger = LoggerFactory.getLogger(Statement.class);
   private static final Logger benchmarking = LoggerFactory.getLogger("benchmarking");

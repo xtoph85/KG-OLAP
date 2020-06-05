@@ -40,6 +40,16 @@ public class BaseGraphGenerator extends GraphGenerator {
   private Map<String,File> resourceFiles = new HashMap<String,File>();
   private Map<File,BufferedReader> resourceFileReaders = new HashMap<File,BufferedReader>();
   
+  private boolean assertClassMembership = true;
+  
+  public void setAssertClassMembership(boolean assertClassMembership) {
+    this.assertClassMembership = assertClassMembership;
+  }
+  
+  public boolean isAssertClassMemberhip() {
+    return this.assertClassMembership;
+  }
+  
   public void setResourceFile(String resourceClass, File resourceFile) {
     this.resourceFiles.put(resourceClass, resourceFile);
   }
@@ -160,7 +170,11 @@ public class BaseGraphGenerator extends GraphGenerator {
           String factInstance = this.getResourceForClass(factClass);
           
           if(defineRdfType.contains(factClass) || defineRdfTypeTemp.contains(factClass)) {
-            bWriter.write("  " + factInstance + " rdf:type " + factClass + " .\n");
+            if(this.assertClassMembership) {
+              bWriter.write("  " + factInstance + " rdf:type " + factClass + " .\n");
+            } else {
+              //bWriter.write("  " + factInstance + " rdf:type owl:Thing .\n");
+            }
           }
           
           String[] objectPropertiesForFactClass = objectProperties.get(factClass);
@@ -173,7 +187,11 @@ public class BaseGraphGenerator extends GraphGenerator {
                 
                 if((defineRdfType.contains(rangeClass) || defineRdfTypeTemp.contains(rangeClass)) 
                     && !factClasses.contains(rangeClass)) {
-                  bWriter.write("  " + resource + " rdf:type " + rangeClass + " .\n");
+                  if(this.assertClassMembership) {
+                    bWriter.write("  " + resource + " rdf:type " + rangeClass + " .\n");
+                  } else {
+                    //bWriter.write("  " + resource + " rdf:type owl:Thing .\n");
+                  }
                 }
                 
                 bWriter.write("  " + factInstance + " " + dimensionProperty + " " + resource + " .\n");

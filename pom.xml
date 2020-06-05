@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>at.jku.dke</groupId>
   <artifactId>kgolap</artifactId>
-  <version>1.0.4</version>
+  <version>1.0.5</version>
   <properties>
    <!-- <m2e.disableTestClasspathFlag>true</m2e.disableTestClasspathFlag> -->
    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

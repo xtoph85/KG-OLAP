@@ -34,6 +34,17 @@ public class GroupingGraphGenerator extends GraphGenerator {
   private Map<String,String> ranges = new HashMap<String,String>();
   
   private Map<File,BufferedReader> resourceFileReaders = new HashMap<File,BufferedReader>();
+
+  
+  private boolean assertClassMembership = true;
+  
+  public void setAssertClassMembership(boolean assertClassMembership) {
+    this.assertClassMembership = assertClassMembership;
+  }
+  
+  public boolean isAssertClassMemberhip() {
+    return this.assertClassMembership;
+  }
   
   public void setGroupResourcesFile(String groupingProperty, File resourceFile) {
     this.groupResourcesFiles.put(groupingProperty, resourceFile);
@@ -156,14 +167,22 @@ public class GroupingGraphGenerator extends GraphGenerator {
           String group = this.getGroupResource(groupingProperty);
           
           if(range != null) {
-            bWriter.write("  " + group + " rdf:type " + range + " .\n");
+            if(this.assertClassMembership) {
+              bWriter.write("  " + group + " rdf:type " + range + " .\n");
+            } else {
+              //bWriter.write("  " + group + " rdf:type owl:Thing .\n");
+            }
           }
                     
           for(int j = 0; j < noOfInstances; j++) {
             String instance = this.getInstanceResource(groupingProperty);
             
             if(domain != null) {
-              bWriter.write("  " + instance + " rdf:type " + domain + " .\n");
+              if(this.assertClassMembership) {
+                bWriter.write("  " + instance + " rdf:type " + domain + " .\n");
+              } else {
+                //bWriter.write("  " + instance + " rdf:type owl:Thing .\n");
+              }
             }
             
             bWriter.write("  " + instance + " " + groupingProperty + " " + group + " .\n");

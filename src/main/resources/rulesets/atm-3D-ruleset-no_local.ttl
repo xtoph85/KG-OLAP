@@ -1,0 +1,314 @@
+#=========================================================================
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix ckr:  <http://dkm.fbk.eu/ckr/meta#> .
+@prefix obj: <http://example.org/kgolap/object-model#> .
+@prefix sys:  <sys:> .
+@prefix rr:   <http://rdfpro.fbk.eu/ontologies/rules#> .
+@prefix :     <http://rdfpro.fbk.eu/ontologies/rules/olap-rdfs#> .
+@prefix olap: <http://dkm.fbk.eu/ckr/olap-model#> .
+@prefix cube: <http://example.org/kgolap/cube-model#> .
+
+# RDFpro rules for KG-OLAP / RDFS / 3 dimensions
+# 
+# Phases:                                           
+# 1) Global dependencies                           
+# 2) Global closure
+# 3) Context structure: coverage
+# 4) Global closure (recomputation)
+# 5) Local dependencies
+# 6) Local closure
+
+#-------------------------------------------------------------------------
+# PREFIXES #
+
+rr: rr:prefix "rr" .
+sys: rr:prefix "sys" .
+rdf: rr:prefix "rdf" .
+rdfs: rr:prefix "rdfs" .
+owl: rr:prefix "owl" .
+ckr: rr:prefix "ckr" .
+olap: rr:prefix "olap" .
+cube: rr:prefix "cube" .
+
+#-------------------------------------------------------------------------
+# RULES #
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+# Phase 1: global dependencies #
+
+# Note: binding of ?global_inf is passed as constant name on invocation: ckr:global-inf
+
+# Global inference graph
+:dep-global a rr:NonFixpointRule ;           
+    rr:phase "1" ;
+    rr:head """ GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?global_inf, ckr:global } """ ; 
+    rr:body """ """ .
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+# Phase 2: global closure #
+
+# FIXPOINT:
+:prl-subc-g a rr:Rule ;
+    rr:phase "2" ;
+    rr:head """ GRAPH ?global_inf { ?x rdf:type ?z } """ ;
+    rr:body """ GRAPH ?g1 { ?y rdfs:subClassOf ?z }
+                GRAPH ?g2 { ?x rdf:type ?y }
+                GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g1, ?g2 } 
+                FILTER NOT EXISTS {
+                   GRAPH ?g0 { ?x rdf:type ?z }
+                   GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g0 }
+                } """ .
+
+:prl-subr-g a rr:Rule ;
+    rr:phase "2" ;	
+    rr:head """ GRAPH ?global_inf { ?x ?w ?x1 } """ ;
+    rr:body """ GRAPH ?g1 { ?v rdfs:subPropertyOf ?w }
+                GRAPH ?g2 { ?x ?v ?x1 }
+                GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g1, ?g2 } 
+                FILTER NOT EXISTS {
+                   GRAPH ?g0 { ?x ?w ?x1 }
+                   GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g0 }
+                } """ .
+
+:prl-subrc-g a rr:Rule ;
+    rr:phase "2" ;	
+    rr:head """ GRAPH ?global_inf { ?x ?w ?z } """ ;
+    rr:body """ GRAPH ?g1 { ?w owl:propertyChainAxiom ?l.
+                            ?l rdf:first ?u;
+                            rdf:rest [rdf:first ?v; rdf:rest rdf:nil].}   
+                GRAPH ?g2 { ?x ?u ?y }
+                GRAPH ?g3 { ?y ?v ?z }
+                GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g1, ?g2, ?g3 } 
+                FILTER NOT EXISTS {
+                  GRAPH ?g0 { ?x ?w ?z }
+                  GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g0 }
+                } """ .
+
+:prl-subcnj-g a rr:Rule ;
+    rr:phase "2" ;	
+    rr:head """ GRAPH ?global_inf { ?x rdf:type ?z } """ ;
+    rr:body """ GRAPH ?g1 {?z1 owl:intersectionOf ?l.
+                           ?l rdf:first ?y1;
+                              rdf:rest [rdf:first ?y2; rdf:rest rdf:nil].}
+                GRAPH ?g2 { ?z1 rdfs:subClassOf ?z }
+                FILTER (?y1 != ?y2) 
+                GRAPH ?g3 { ?x rdf:type ?y1 }
+                GRAPH ?g4 { ?x rdf:type ?y2 }
+                GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g1, ?g2, ?g3, ?g4 } 
+                FILTER NOT EXISTS {
+                   GRAPH ?g0 { ?x rdf:type ?z }
+                   GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g0 }
+                } """ .
+
+:prl-subex-g a rr:Rule ;
+    rr:phase "2" ;	
+    rr:head """ GRAPH ?global_inf { ?x rdf:type ?z } """ ;
+    rr:body """ GRAPH ?g1 { ?z1 owl:someValuesFrom ?y;
+                                owl:onProperty ?v;
+                                rdfs:subClassOf ?z }
+                GRAPH ?g2 { ?x ?v ?x1 }
+                GRAPH ?g3 { ?x1 rdf:type ?y }
+                GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g1, ?g2, ?g3 }
+                FILTER(?v != rdf:type) 
+                FILTER NOT EXISTS {
+                   GRAPH ?g0 { ?x rdf:type ?z }
+                   GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g0 }
+                } """ .
+                 
+:prl-supex-g a rr:Rule ;
+    rr:phase "2" ;	
+    rr:head """ GRAPH ?global_inf { ?x ?r ?x1 } """ ;
+    rr:body """ GRAPH ?g1 { ?z owl:hasValue ?x1; owl:onProperty ?r.
+                            ?y rdfs:subClassOf ?z }
+                GRAPH ?g2 { ?x a ?y }
+                GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g1, ?g2 } 
+                FILTER NOT EXISTS {
+                   GRAPH ?g0 { ?x ?r ?x1 }
+                   GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g0 }
+                } """ .
+                
+# Make sure levels roll up to themselves (TODO: Make OWL reasoning work here!)
+:prl-rollup-self a rr:Rule ;
+    rr:phase "2" ;
+    rr:head """ GRAPH ?global_inf { ?x olap:directlyRollsUpTo ?x } """ ;
+    rr:body """ GRAPH ?g1 { 
+                  { 
+                    ?x rdf:type olap:Level .
+                  } UNION {
+                    ?x rdf:type olap:DimensionAttributeValue .
+                  }
+                }
+                GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g1 } """ .
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+# Phase 3: context structure: coverage #
+                
+# Computes the coverage hierarchy across contexts
+:cts-compute-covers a rr:NonFixpointRule ;
+    rr:phase "3" ;   
+    rr:head """ GRAPH ?global_inf { ?c2 olap:covers ?c1 } """ ;
+    rr:body """ GRAPH ckr:global {
+                  ?c1 cube:hasAircraft ?air1 .
+                  ?c1 cube:hasLocation ?loc1 .
+                  ?c1 cube:hasDate ?date1.
+                  ?c2 cube:hasAircraft ?air .
+                  ?c2 cube:hasLocation ?loc .
+                  ?c2 cube:hasDate ?date .
+                }
+                GRAPH ?global_inf {
+                  ?air1 olap:rollsUpTo ?air .
+                  ?loc1 olap:rollsUpTo ?loc .
+                  ?date1 olap:rollsUpTo ?date .
+                } """ .
+                                 
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+# Phase 4: global closure (recomputation) #
+### RECOMPUTATION: AS ABOVE RULES FROM PH.2 WITH DIFFERENT PHASE NUMBER ###
+
+# FIXPOINT:
+:prl-subc-g2 a rr:Rule ;
+    rr:phase "4" ;
+    rr:head """ GRAPH ?global_inf { ?x rdf:type ?z } """ ;
+    rr:body """ GRAPH ?g1 { ?y rdfs:subClassOf ?z }
+                GRAPH ?g2 { ?x rdf:type ?y }
+                GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g1, ?g2 } 
+                FILTER NOT EXISTS {
+                    GRAPH ?g0 { ?x rdf:type ?z }
+                    GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g0 }
+                } """ .
+
+:prl-subr-g2 a rr:Rule ;
+    rr:phase "4" ;	
+    rr:head """ GRAPH ?global_inf { ?x ?w ?x1 } """ ;
+    rr:body """ GRAPH ?g1 { ?v rdfs:subPropertyOf ?w }
+                GRAPH ?g2 { ?x ?v ?x1 }
+                GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g1, ?g2 } 
+                FILTER NOT EXISTS {
+                     GRAPH ?g0 { ?x ?w ?x1 }
+                     GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g0 }
+                } """ .
+               
+:prl-subrc-g2 a rr:Rule ;
+    rr:phase "4" ;	
+    rr:head """ GRAPH ?global_inf { ?x ?w ?z } """ ;
+    rr:body """ GRAPH ?g1 { ?w owl:propertyChainAxiom ?l.
+                            ?l rdf:first ?u;
+                            rdf:rest [rdf:first ?v; rdf:rest rdf:nil].}   
+                GRAPH ?g2 { ?x ?u ?y }
+                GRAPH ?g3 { ?y ?v ?z }
+                GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g1, ?g2, ?g3 } 
+                FILTER NOT EXISTS {
+                  GRAPH ?g0 { ?x ?w ?z }
+                  GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g0 }
+                } """ .
+
+:prl-subcnj-g2 a rr:Rule ;
+    rr:phase "4" ;	
+    rr:head """ GRAPH ?global_inf { ?x rdf:type ?z } """ ;
+    rr:body """ GRAPH ?g1 {?z1 owl:intersectionOf ?l.
+                             ?l rdf:first ?y1;
+                             rdf:rest [rdf:first ?y2; rdf:rest rdf:nil].}
+                 GRAPH ?g2 { ?z1 rdfs:subClassOf ?z }
+                 FILTER (?y1 != ?y2) 
+                 GRAPH ?g3 { ?x rdf:type ?y1 }
+                 GRAPH ?g4 { ?x rdf:type ?y2 }
+                 GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g1, ?g2, ?g3, ?g4 } 
+                 FILTER NOT EXISTS {
+                     GRAPH ?g0 { ?x rdf:type ?z }
+                     GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g0 }
+                 } """ .
+
+:prl-subex-g2 a rr:Rule ;
+    rr:phase "4" ;	
+    rr:head """ GRAPH ?global_inf { ?x rdf:type ?z } """ ;
+    rr:body """ GRAPH ?g1 { ?z1 owl:someValuesFrom ?y;
+                                owl:onProperty ?v;
+                                rdfs:subClassOf ?z }
+                GRAPH ?g2 { ?x ?v ?x1 }
+                GRAPH ?g3 { ?x1 rdf:type ?y }
+                GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g1, ?g2, ?g3 }
+                FILTER(?v != rdf:type) 
+                FILTER NOT EXISTS {
+                   GRAPH ?g0 { ?x rdf:type ?z }
+                   GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g0 }
+                } """ .
+                 
+:prl-supex-g2 a rr:Rule ;
+    rr:phase "4" ;	
+    rr:head """ GRAPH ?global_inf { ?x ?r ?x1 } """ ;
+    rr:body """ GRAPH ?g1 { ?z owl:hasValue ?x1; owl:onProperty ?r.
+                             ?y rdfs:subClassOf ?z }
+                GRAPH ?g2 { ?x a ?y }
+                GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g1, ?g2 } 
+                FILTER NOT EXISTS {
+                  GRAPH ?g0 { ?x ?r ?x1 }
+                  GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g0 }
+                } """ .
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+# Phase 5: local dependencies #
+
+# Associates each context to its inferred module
+:pgl-i-addmod2 a rr:Rule ; 
+    rr:phase "5" ;
+    rr:head """ GRAPH ?global_inf { ?c ckr:hasModule ?m_inf .
+                                    ?m_inf ckr:closureOf ?c.  
+                                  } 
+                GRAPH ?m_inf { ?m_inf ckr:derivedFrom ?m_inf . } """ ;
+    rr:body """ GRAPH ?g1 { ?c a ckr:Context }
+                GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g1 }
+                FILTER NOT EXISTS {
+                   GRAPH ?g2 { ?c a ckr:Null } 
+                   GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g2 }
+                }   
+                BIND ( IRI( CONCAT( STR(?c), "-inf" ) ) AS ?m_inf) 
+                FILTER NOT EXISTS {
+                   GRAPH ?global_inf { ?m_inf ckr:closureOf ?c } 
+                } """ .
+
+# Associates a context with its modules
+:dep-local-ctx a rr:Rule ;
+    rr:phase "5" ;
+    rr:head """ GRAPH ?m_inf { ?m_inf ckr:derivedFrom ?m } """ ;
+    rr:body """ GRAPH ?g { ?c ckr:hasAssertedModule ?m }
+                GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g.
+                                    ?m_inf ckr:closureOf ?c } 
+                FILTER NOT EXISTS {
+                    GRAPH ?m_inf { ?m_inf ckr:derivedFrom ?m }
+                } """ .
+                
+# Associates every context with the modules of global
+:dep-local-gl a rr:Rule ;
+    rr:phase "5" ;                    
+    rr:head """ GRAPH ?m_inf { ?m_inf ckr:derivedFrom ?g } """ ;
+    rr:body """ GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g.
+                                    ?m_inf ckr:closureOf ?c } 
+                  FILTER NOT EXISTS {
+                    GRAPH ?m_inf { ?m_inf ckr:derivedFrom ?global_inf }
+                  } """ .
+
+# Downward propagation of modules
+:dep-local-propagate a rr:Rule ;
+    rr:phase "5" ;
+    rr:head """ GRAPH ?m_inf { ?m_inf ckr:derivedFrom ?m } """ ;
+    rr:body """ GRAPH ckr:global { 
+                  ?c2 ckr:hasAssertedModule ?m
+                } 
+                FILTER NOT EXISTS {
+                  GRAPH ?g1 {
+                    ?m ckr:closureOf ?c2 
+                  }
+                }
+                GRAPH ?g2 { ?c2 olap:covers ?c1  }
+                GRAPH ?global_inf { ?global_inf ckr:derivedFrom ?g1, ?g2.
+                                    ?m_inf ckr:closureOf ?c1 } 
+                FILTER NOT EXISTS {
+                  GRAPH ?m_inf { ?m_inf ckr:derivedFrom ?m }
+                } """ .
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+# Phase 6: local closure #
+
+#=========================================================================
+ 

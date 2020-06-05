@@ -197,6 +197,17 @@ public class DemoRunner {
                 
                 analysis.run();
               }
+            } else if (line.hasOption("i")) {
+              int iterations = Integer.parseInt(line.getOptionValue("i"));
+              
+              for(int i = 1 ; i < iterations; i++) {                
+                System.setProperty("at.jku.dke.kgolap.demo.benchmark.iteration", i + "");
+                
+                cube.purge(Repository.BASE);
+                cube.purge(Repository.TEMP);
+                
+                cube.add(datasetFilename);
+              }
             }
             
             cube.shutDown();

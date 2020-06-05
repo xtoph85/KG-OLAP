@@ -55,6 +55,7 @@ import eu.fbk.rdfpro.RDFHandlers;
 import eu.fbk.rdfpro.RuleEngine;
 import eu.fbk.rdfpro.util.QuadModel;
 
+@SuppressWarnings("restriction")
 public abstract class SesameRepo extends Repo {
   private static final Logger logger = LoggerFactory.getLogger(SesameRepo.class);
   private static final Logger benchmarking = LoggerFactory.getLogger("benchmarking");
