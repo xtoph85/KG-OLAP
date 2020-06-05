@@ -1,6 +1,8 @@
 # Knowledge Graph OLAP (KG-OLAP)
 
-The KG-OLAP proof-of-concept prototype comes as a Maven project. In order to build the project run the *package* goal, which will create zip and tar.gz archives that include all the binaries and third-party libraries.
+The KG-OLAP proof-of-concept prototype ships as a Maven project and supports creating a binary package.
+
+    mvn clean package
 
 In the bin folder we also provide pre-compiled binaries, which contain shell scripts for running the performance experiments. In order to run the shell scripts, you will need a GraphDB instance running on localhost on port 7200. You can change hostname and port number in the in the `set-variables.sh` script accordingly.
 
